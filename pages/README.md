@@ -8,6 +8,7 @@ Thư mục `pages` chứa toàn bộ các trang của website.
 3. Các thành phần dùng chung cho nhiều trang được đặt trong thư mục `common`
 
 ## Ví dụ một cấu trúc thư mục (bê từ GPT nốt :v)
+```
 pages/
 ├── home/
 │   ├── index.html
@@ -44,7 +45,7 @@ pages/
         ├── main.js
         ├── utils.js
         └── auth.js
-
+```
 ## Quy ước
 - Tên thư mục và file dùng chữ thường
 - Tên trang rõ nghĩa, không viết tắt

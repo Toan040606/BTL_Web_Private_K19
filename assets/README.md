@@ -8,6 +8,7 @@
 3. Mỗi loại tài nguyên được đặt trong thư mục riêng của nó
 
 ## Một ví dụ cấu trúc thư mục (copy từ GPT :v)
+```
 assets/
 ├── images/
 │   ├── home/
@@ -30,7 +31,7 @@ assets/
 │
 └── audios/
     └── notification/
-
+```
 ## Quy ước đặt tên
 - Tên file dùng chữ thường
 - Các từ ngăn cách bằng dấu gạch ngang (-)
