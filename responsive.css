@@ -1,0 +1,81 @@
+@media (max-width: 576px) {
+    header {
+        padding: 10px 20px;
+        background-color: var(--black-smoke);
+    }
+
+    #logo {
+        font-size: 27px;
+    }
+
+    .nav {
+        display: none;
+    }
+
+    .carousel {
+        height: 100vh;
+        width: 100vw;
+    }
+
+    .slider {
+        margin-top: 1rem;
+        height: 70%;
+    }
+
+    .carousel .content-slider .item {
+        bottom: 100px;
+        left: 5%;
+        width: 700px;
+    }
+
+    .carousel .content-slider .item .item-content h3 {
+        font-size: 3vh;
+        margin-bottom: 2vh;
+    }
+
+    .carousel .content-slider .item .item-content p {
+        font-size: 2vh;
+        margin-bottom: 1.5vh;
+    }
+
+    .carousel .content-slider .item .item-content .buttons button:nth-of-type(1) {
+        height: 5vh;
+        padding: 0 20px;
+        font-size: 1.5vh;
+    }
+
+    .carousel .content-slider .item .item-content .buttons button:nth-of-type(2),
+    .carousel .content-slider .item .item-content .buttons button:nth-of-type(3) {
+        padding: 5px 5px;
+        height: 5vh;
+        width: 5vh;
+        font-size: 1.5vh;
+    }
+
+    .thumb-slider {
+        margin: 0 20px;
+        width: 90%;
+        right: 0;
+        height: 11vh;
+    }
+
+    .thumb-slider .item {
+        width: 30%;
+        height: 80%;
+    }
+
+    .thumb-slider .item.active {
+        width: 32%;
+        height: 90%;
+    }
+
+    .buttons {
+        margin-bottom: 1.5vh;
+    }
+
+    .combine {
+        bottom: 2vh;
+        gap: 2px;
+        height: 30%
+    }
+}
