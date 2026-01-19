@@ -287,21 +287,22 @@ ul {
 }
 
 .movie-list {
-    display: flex;
+    display: grid;
     gap: 15px;
+    grid-auto-flow: column;
+    grid-auto-columns: 185px;
     overflow-x: auto;
     padding: 10px 5px;
     height: 420px;
     scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
 }
 
 .movie-list::-webkit-scrollbar {
-    display: none;
+    display: none;   
 }
 
 .movie-list .movie-item {
-    flex-shrink: 0;
-    width: 190px;
     height: 300px;
     cursor: pointer;
     scroll-snap-align: start;
@@ -318,20 +319,19 @@ ul {
     padding: 0 10px;
 }
 
-.thinh-hanh {
+.thinh-hanh, 
+.anime,
+.hanh-dong,
+.phim-trung{
     position: relative;
 }
 
-.arrows {
+.movie-list::scroll-button(right), .movie-list::scroll-button(left){
+    content: '>';
     position: absolute;
-    display: flex;
     width: 106%;
     top: 9%;
-    justify-content: space-between;
-    left: -3%;
-}
-
-#prev, #next {
+    right: -3%; 
     height: 300px;
     width: 35px;
     font-size: 50px;
@@ -340,11 +340,22 @@ ul {
     border: none;
     color: rgb(168, 168, 168);
     cursor: pointer;
-    transition: 0.3s;
     border-radius: 20px;
+    transition: 0.2s ease;
 }
 
-#prev:hover, #next:hover {
+.movie-list::scroll-button(left){
+    content: '<';
+    left: -3%;
+}
+
+.movie-list::scroll-button(right):hover, .movie-list::scroll-button(left):hover {
     color: white;
     background-color: black;
 }
+
+.movie-list::scroll-button(right):disabled, .movie-list::scroll-button(left):disabled {
+    opacity: 0;
+}
+
+
