@@ -87,7 +87,6 @@ ul {
     height: 100vh;
     position: relative;
     overflow: hidden;
-    top: 4rem;
 }
 
 .slider {
@@ -119,7 +118,7 @@ ul {
     position: absolute;
     left: 0;
     top: 0;
-    background-image: linear-gradient(to bottom, var(--black-smoke) 10%, transparent);
+    background-image: linear-gradient(to bottom, var(--black-smoke) 40%, transparent);
 }
 
 .carousel-recommended .slider .item::after {

@@ -1,6 +1,9 @@
 let home = [];
 let homeMovies = [];
 let homeImgs = [];
+let actionMovies = [];
+let chineseMovies = [];
+let animeMovies = [];
 
 async function loadMovies() {
   const res = await fetch("https://ophim1.com/v1/api/home");
@@ -10,11 +13,48 @@ async function loadMovies() {
   homeImgs = data.data.seoOnPage.og_image;
 }
 
+async function loadActionMovies() {
+  const res = await fetch("https://ophim1.com/v1/api/danh-sach/hanh-dong");
+  const data = await res.json();
+  actionMovies = data.data.items;
+}
+
+async function loadChineseMovies() {
+  const res = await fetch(
+    "https://ophim1.com/v1/api/danh-sach/phim-moi?country=trung-quoc",
+  );
+  const data = await res.json();
+  console.log(data);
+  chineseMovies = data.data.items;
+}
+
+async function loadAnimeMovies() {
+  const res = await fetch("https://ophim1.com/v1/api/danh-sach/hoat-hinh");
+  const data = await res.json();
+  animeMovies = data.data.items;
+}
+
 const fomatPosterUrl = (url) => {
   if (url.includes("thumb")) {
     return url.replace("thumb", "poster");
   }
   return url;
+};
+
+const is18Plus = (movie) => {
+  return movie.category.some((category) => category.slug === "phim-18");
+};
+
+const isThaiLand = (movie) => {
+  return movie.country.some((country) => country.slug === "thai-lan");
+};
+
+const removeSensitiveFilms = (list) => {
+  list.forEach((film, index) => {
+    if (is18Plus(film) || isThaiLand(film)) {
+      list.splice(index, 1);
+    }
+  });
 };
 
 const renderSlider = (homeMovies) => {
@@ -26,10 +66,10 @@ const renderSlider = (homeMovies) => {
 
   for (let i = 0; i < 10; i++) {
     sliderContainer[i].innerHTML += `
-      <img src="https://img.ophim1.com/uploads/movies/${fomatPosterUrl(
-        homeMovies[i].thumb_url
-      )}" alt="${homeMovies[i].name}" />
-      </div>
+    <img src="https://img.ophim1.com/uploads/movies/${fomatPosterUrl(
+      homeMovies[i].thumb_url,
+    )}" alt="${homeMovies[i].name}" />
+    </div>
     `;
   }
 
@@ -73,9 +113,9 @@ const renderImgs = (homeImgs) => {
 
   for (let i = 0; i < 10; i++) {
     sliderContainer[i].innerHTML += `
-      <img src="https://img.ophim1.com${fomatPosterUrl(
-        homeImgs[i]
-      )}" alt="Thumbnail ${i + 1}" />
+    <img src="https://img.ophim1.com${fomatPosterUrl(
+      homeImgs[i],
+    )}" alt="Thumbnail ${i + 1}" />
     `;
   }
 
@@ -169,80 +209,80 @@ const renderThinhHanh = (homeMovies) => {
 
   homeMovies.forEach((movie) => {
     thinhHanhContainer.innerHTML += `
-      <div class="movie-item">
-        <img src="https://img.ophim1.com/uploads/movies/${movie.thumb_url}" alt="${movie.name}" />
-        <h4>${movie.name}</h4>
-      </div>
+    <div class="movie-item">
+      <img src="https://img.ophim1.com/uploads/movies/${movie.thumb_url}" alt="${movie.name}" />
+      <h4>${movie.name}</h4>
+    </div>
+  `;
+  });
+};
+
+const renderAnime = (animeMovies) => {
+  const phimVietContainer = document.querySelector(".anime .movie-list");
+  phimVietContainer.innerHTML = "";
+
+  animeMovies.forEach((movie) => {
+    phimVietContainer.innerHTML += `
+    <div class="movie-item">
+      <img src="https://img.ophim1.com/uploads/movies/${movie.thumb_url}" alt="${movie.name}" />
+      <h4>${movie.name}</h4>
+    </div>
     `;
   });
 };
 
-const isAnime = (movie) => {
-  return movie.type === "hoathinh";
-};
-
-const renderAnime = (homeMovies) => {
-  const phimVietContainer = document.querySelector(".anime .movie-list");
-  phimVietContainer.innerHTML = "";
-
-  homeMovies.forEach((movie) => {
-    if (isAnime(movie)) {
-      phimVietContainer.innerHTML += `
-      <div class="movie-item">
-        <img src="https://img.ophim1.com/uploads/movies/${movie.thumb_url}" alt="${movie.name}" />
-        <h4>${movie.name}</h4>
-      </div>
-      `;
-    }
-  });
-};
-
-const isAction = (movie) => {
-  return movie.category.some((category) => category.slug === "hanh-dong");
-};
-
-const renderAction = (homeMovies) => {
+const renderAction = (actionMovies) => {
   const actionContainer = document.querySelector(".hanh-dong .movie-list");
   actionContainer.innerHTML = "";
 
-  homeMovies.forEach((movie) => {
-    if (isAction(movie)) {
-      actionContainer.innerHTML += `
+  actionMovies.forEach((movie) => {
+    actionContainer.innerHTML += `
       <div class="movie-item">
         <img src="https://img.ophim1.com/uploads/movies/${movie.thumb_url}" alt="${movie.name}" />
         <h4>${movie.name}</h4>
       </div>
       `;
-    }
   });
 };
 
-const isChinese = (movie) => {
-  return movie.country.some((country) => country.slug === "trung-quoc");
-};
-
-const renderChinese = (homeMovies) => {
+const renderChinese = (chineseMovies) => {
   const chineseContainer = document.querySelector(".phim-trung .movie-list");
   chineseContainer.innerHTML = "";
 
-  homeMovies.forEach((movie) => {
-    if (isChinese(movie)) {
-      chineseContainer.innerHTML += `
-      <div class="movie-item">
-        <img src="https://img.ophim1.com/uploads/movies/${movie.thumb_url}" alt="${movie.name}" />
-        <h4>${movie.name}</h4>
-      </div>
-      `;
-    }
+  chineseMovies.forEach((movie) => {
+    chineseContainer.innerHTML += `
+    <div class="movie-item">
+      <img src="https://img.ophim1.com/uploads/movies/${movie.thumb_url}" alt="${movie.name}" />
+      <h4>${movie.name}</h4>
+    </div>
+    `;
   });
 };
 
+async function allCategory() {
+  const res = await fetch("https://ophim1.com/v1/api/quoc-gia");
+  const data = await res.json();
+  console.log(data);
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   await loadMovies();
+  await loadActionMovies();
+  await allCategory();
+  await loadChineseMovies();
+  await loadAnimeMovies();
 
   console.log(home);
   console.log(homeMovies);
   console.log(homeImgs);
+  console.log(actionMovies);
+  console.log(animeMovies);
+  console.log(chineseMovies);
+
+  removeSensitiveFilms(homeMovies);
+  removeSensitiveFilms(animeMovies);
+  removeSensitiveFilms(actionMovies);
+  removeSensitiveFilms(chineseMovies);
 
   renderSlider(homeMovies);
   renderContent(homeMovies);
@@ -252,9 +292,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   renderThinhHanh(homeMovies);
 
-  renderAnime(homeMovies);
+  renderAnime(animeMovies);
 
-  renderAction(homeMovies);
+  renderAction(actionMovies);
 
-  renderChinese(homeMovies);
+  renderChinese(chineseMovies);
 });
