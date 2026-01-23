@@ -1,7 +1,11 @@
-@media (max-width: 576px) {
+@media (max-width: 767px) {
+    body {
+        width: 100vw;
+    }
+
     header {
         padding: 10px 20px;
-        background-color: var(--black-smoke);
+        width: 100vw;
     }
 
     #logo {
@@ -13,39 +17,50 @@
     }
 
     .carousel {
-        height: 100vh;
-        width: 100vw;
+        height: auto;
+        width: auto;
     }
 
     .slider {
         margin-top: 1rem;
-        height: 70%;
+        height: 60%;
     }
 
-    .carousel .content-slider .item {
-        bottom: 100px;
+    .carousel-recommended {
+        height: 80vh;
+    }
+
+    .carousel-recommended .slider .item img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        object-position: center 4rem;
+    }
+
+    .carousel-recommended .content-slider .item {
+        bottom: 60%;
         left: 5%;
-        width: 700px;
+        width: 650px;
     }
 
-    .carousel .content-slider .item .item-content h3 {
-        font-size: 3vh;
+    .carousel-recommended .content-slider .item .item-content h3 {
+        font-size: 1rem;
         margin-bottom: 2vh;
     }
 
-    .carousel .content-slider .item .item-content p {
+    .carousel-recommended .content-slider .item .item-content p {
         font-size: 2vh;
         margin-bottom: 1.5vh;
     }
 
-    .carousel .content-slider .item .item-content .buttons button:nth-of-type(1) {
+    .carousel-recommended .content-slider .item .item-content .buttons button:nth-of-type(1) {
         height: 5vh;
         padding: 0 20px;
         font-size: 1.5vh;
     }
 
-    .carousel .content-slider .item .item-content .buttons button:nth-of-type(2),
-    .carousel .content-slider .item .item-content .buttons button:nth-of-type(3) {
+    .carousel-recommended .content-slider .item .item-content .buttons button:nth-of-type(2),
+    .carousel-recommended .content-slider .item .item-content .buttons button:nth-of-type(3) {
         padding: 5px 5px;
         height: 5vh;
         width: 5vh;
@@ -74,8 +89,11 @@
     }
 
     .combine {
-        bottom: 2vh;
-        gap: 2px;
-        height: 30%
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        gap: 10px;
+        position: absolute;
+        bottom: 10px;
     }
 }

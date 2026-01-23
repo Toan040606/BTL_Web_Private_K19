@@ -1,9 +1,28 @@
 let home = [];
 let homeMovies = [];
-let homeImgs = [];
 let actionMovies = [];
 let chineseMovies = [];
 let animeMovies = [];
+let saveUrl = [];
+
+function splitId(url) {
+  console.log(url);
+  if (url === "") return null;
+  return url.split("v=")[1];
+}
+
+async function loadMovieTrailer(slug) {
+  if (saveUrl[slug]) return saveUrl[slug];
+
+  const res = await fetch(`https://ophim1.com/v1/api/phim/${slug}`);
+  const data = await res.json();
+
+  const trailerLink = data.data.item.trailer_url;
+  const videoId = splitId(trailerLink);
+
+  saveUrl[slug] = videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&rel=0&start=60` : null;
+  return saveUrl[slug];
+}
 
 async function loadMovies() {
   const res = await fetch("https://ophim1.com/v1/api/home");
@@ -61,16 +80,15 @@ const renderSlider = (homeMovies) => {
   const sliderContainer = document.querySelectorAll(".slider .item");
 
   for (let i = 0; i < 10; i++) {
-    sliderContainer[i].innerHTML = "";
-  }
+    const img = document.createElement("img");
+    img.src=`https://img.ophim1.com/uploads/movies/${fomatPosterUrl(homeMovies[i].thumb_url)}`;
+    img.alt=`${homeMovies[i].name}`;
+    sliderContainer[i].appendChild(img);
 
-  for (let i = 0; i < 10; i++) {
-    sliderContainer[i].innerHTML += `
-    <img src="https://img.ophim1.com/uploads/movies/${fomatPosterUrl(
-      homeMovies[i].thumb_url,
-    )}" alt="${homeMovies[i].name}" />
-    </div>
-    `;
+    const iframe = document.createElement("iframe");
+    iframe.className = "trailer";
+    iframe.allow = "autoplay; encrypted-media";
+    sliderContainer[i].appendChild(iframe);
   }
 
   sliderContainer[0].classList.add("active");
@@ -85,7 +103,7 @@ const renderContent = (homeMovies) => {
     contentContainer[i].innerHTML += `
     <div class="item-content">
         <h3>${homeMovies[i].name}</h3>
-        <p>${homeMovies[i].origin_name || ""}</p>
+        <p>${homeMovies[i].origin_name}</p>
         <div class="buttons">
           <button class="play-btn"> <i class="fa-solid fa-play"></i> <span>Xem ngay</span></button>
           <button class="favourite-btn"><i class="fa-regular fa-heart"></i></button>
@@ -104,7 +122,7 @@ const renderContent = (homeMovies) => {
   contentContainer[0].classList.add("active");
 };
 
-const renderImgs = (homeImgs) => {
+const renderImgs = (homeMovies) => {
   const sliderContainer = document.querySelectorAll(".thumb-slider .item");
 
   for (let i = 0; i < 10; i++) {
@@ -113,14 +131,32 @@ const renderImgs = (homeImgs) => {
 
   for (let i = 0; i < 10; i++) {
     sliderContainer[i].innerHTML += `
-    <img src="https://img.ophim1.com${fomatPosterUrl(
-      homeImgs[i],
-    )}" alt="Thumbnail ${i + 1}" />
+    <img src="https://img.ophim1.com/uploads/movies/${fomatPosterUrl(homeMovies[i].thumb_url)}" alt="Thumbnail ${i + 1}" />
     `;
   }
 
   sliderContainer[0].classList.add("active");
 };
+
+const playTrailer = async (i) => {
+  const iframe = document.querySelector(".slider .item.active iframe");
+  const img = document.querySelector(".slider .item.active img");
+
+  const srcLink = await loadMovieTrailer(homeMovies[i].slug);
+  console.log(srcLink);
+  if (srcLink) {
+    img.style.display = "none";
+    iframe.src = srcLink;
+  } return;
+}
+
+function stopTrailer(i) {
+  const iframe = document.querySelectorAll(".slider .item iframe")[i];
+  const img = document.querySelectorAll(".slider .item img")[i];
+
+  img.style.display = "block";
+  iframe.src = "";
+}
 
 let setActive = 1;
 
@@ -130,7 +166,7 @@ const autoNext = () => {
   let thumbSlider = document.querySelectorAll(".thumb-slider .item");
   let thumbSliderContainer = document.querySelector(".thumb-slider");
 
-  setInterval(() => {
+  setInterval(async () => {
     if (setActive >= 10) {
       setActive = 0;
       itemSlider[9].classList.remove("active");
@@ -140,6 +176,8 @@ const autoNext = () => {
       itemSlider[setActive].classList.add("active");
       contentSlider[setActive].classList.add("active");
       thumbSlider[setActive].classList.add("active");
+      stopTrailer(9);
+      await playTrailer(setActive);
     } else {
       itemSlider[setActive - 1].classList.remove("active");
       contentSlider[setActive - 1].classList.remove("active");
@@ -148,15 +186,16 @@ const autoNext = () => {
       itemSlider[setActive].classList.add("active");
       contentSlider[setActive].classList.add("active");
       thumbSlider[setActive].classList.add("active");
+      stopTrailer(setActive-1);
+      await playTrailer(setActive);
     }
 
     /*
-    lấy khoảng cách của item cần di chuyển cách mép trái container bao nhiêu px 
-    rồi trừ đi nửa chiều rộng container để item đó canh item ra giữa nhưng sẽ bị lệch về bên phải 
+    lấy khoảng cách của item cần di chuyển cách mép trái container bao nhiêu px
+    rồi trừ đi nửa chiều rộng container để item đó canh item ra giữa nhưng sẽ bị lệch về bên phải
     sau đó cộng với nửa chiều rộng item để nó không bị lệch phải nữa
     */
-    const scrollPosition =
-      thumbSlider[setActive].offsetLeft -
+    const scrollPosition = thumbSlider[setActive].offsetLeft -
       thumbSliderContainer.offsetWidth / 2 +
       thumbSlider[setActive].offsetWidth / 2;
     thumbSliderContainer.scrollTo({
@@ -165,7 +204,7 @@ const autoNext = () => {
     });
 
     setActive++;
-  }, 5000);
+  }, 20000);
 };
 
 const clickThumb = () => {
@@ -177,7 +216,9 @@ const clickThumb = () => {
   thumbSlider.forEach((thumb, index) => {
     thumb.addEventListener("click", () => {
       console.log("Clicked thumb index:", setActive);
-      document.querySelector(".slider .item.active").classList.remove("active");
+      document
+        .querySelector(".slider .item.active")
+        .classList.remove("active");
       document
         .querySelector(".content-slider .item.active")
         .classList.remove("active");
@@ -188,6 +229,8 @@ const clickThumb = () => {
       itemSlider[index].classList.add("active");
       contentSlider[index].classList.add("active");
       thumbSlider[index].classList.add("active");
+      stopTrailer(setActive-1);
+      playTrailer(index);
 
       const scrollPosition =
         thumbSlider[index].offsetLeft -
@@ -271,6 +314,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   await allCategory();
   await loadChineseMovies();
   await loadAnimeMovies();
+  await loadMovieTrailer("chu-thuat-hoi-chien-phan-3");
 
   console.log(home);
   console.log(homeMovies);
@@ -286,7 +330,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   renderSlider(homeMovies);
   renderContent(homeMovies);
-  renderImgs(homeImgs);
+  renderImgs(homeMovies);
   clickThumb();
   autoNext();
 
