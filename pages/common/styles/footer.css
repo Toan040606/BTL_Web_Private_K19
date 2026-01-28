@@ -1,0 +1,50 @@
+footer {
+    border-top: 1px solid #2c2c2c;
+    display: flex;
+    padding: 30px;
+    justify-content: space-between;
+}
+
+.right {
+    display: flex;
+    justify-content: space-between;
+    gap: 3rem;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 2rem;
+    width: 20%;
+}
+
+.left p {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.left span {
+    padding: 20px;
+    font-size: 50px;
+}
+
+.title {
+    color: white;
+    font-weight: 650;
+    white-space: 2px;
+}
+
+footer li{
+    color: var(--nav-color);
+}
+
+footer li:hover a {
+    color: var(--brand-color) !important;
+    transition: color 0.3s ease;
+}

@@ -1,0 +1,99 @@
+@media (max-width: 767px) {
+    body {
+        width: 100vw;
+    }
+
+    header {
+        padding: 10px 20px;
+        width: 100vw;
+    }
+
+    #logo {
+        font-size: 27px;
+    }
+
+    .nav {
+        display: none;
+    }
+
+    .carousel {
+        height: auto;
+        width: auto;
+    }
+
+    .slider {
+        margin-top: 1rem;
+        height: 60%;
+    }
+
+    .carousel-recommended {
+        height: 80vh;
+    }
+
+    .carousel-recommended .slider .item img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        object-position: center 4rem;
+    }
+
+    .carousel-recommended .content-slider .item {
+        bottom: 60%;
+        left: 5%;
+        width: 650px;
+    }
+
+    .carousel-recommended .content-slider .item .item-content h3 {
+        font-size: 1rem;
+        margin-bottom: 2vh;
+    }
+
+    .carousel-recommended .content-slider .item .item-content p {
+        font-size: 2vh;
+        margin-bottom: 1.5vh;
+    }
+
+    .carousel-recommended .content-slider .item .item-content .buttons button:nth-of-type(1) {
+        height: 5vh;
+        padding: 0 20px;
+        font-size: 1.5vh;
+    }
+
+    .carousel-recommended .content-slider .item .item-content .buttons button:nth-of-type(2),
+    .carousel-recommended .content-slider .item .item-content .buttons button:nth-of-type(3) {
+        padding: 5px 5px;
+        height: 5vh;
+        width: 5vh;
+        font-size: 1.5vh;
+    }
+
+    .thumb-slider {
+        margin: 0 20px;
+        width: 90%;
+        right: 0;
+        height: 11vh;
+    }
+
+    .thumb-slider .item {
+        width: 30%;
+        height: 80%;
+    }
+
+    .thumb-slider .item.active {
+        width: 32%;
+        height: 90%;
+    }
+
+    .buttons {
+        margin-bottom: 1.5vh;
+    }
+
+    .combine {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        gap: 10px;
+        position: absolute;
+        bottom: 10px;
+    }
+}
