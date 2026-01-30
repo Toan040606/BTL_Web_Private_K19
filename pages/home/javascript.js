@@ -1,35 +1,18 @@
 let home = [];
 let homeMovies = [];
+let homeImgsLink = [];
 let actionMovies = [];
 let chineseMovies = [];
 let animeMovies = [];
-let saveUrl = [];
-
-function splitId(url) {
-  console.log(url);
-  if (url === "") return null;
-  return url.split("v=")[1];
-}
-
-async function loadMovieTrailer(slug) {
-  if (saveUrl[slug]) return saveUrl[slug];
-
-  const res = await fetch(`https://ophim1.com/v1/api/phim/${slug}`);
-  const data = await res.json();
-
-  const trailerLink = data.data.item.trailer_url;
-  const videoId = splitId(trailerLink);
-
-  saveUrl[slug] = videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&rel=0&start=60` : null;
-  return saveUrl[slug];
-}
+let imgLink;
 
 async function loadMovies() {
   const res = await fetch("https://ophim1.com/v1/api/home");
   const data = await res.json();
   home = data;
+  imgLink = data.data.APP_DOMAIN_CDN_IMAGE;
   homeMovies = data.data.items;
-  homeImgs = data.data.seoOnPage.og_image;
+  homeImgsLink = data.data.seoOnPage.og_image;
 }
 
 async function loadActionMovies() {
@@ -69,26 +52,19 @@ const isThaiLand = (movie) => {
 };
 
 const removeSensitiveFilms = (list) => {
-  list.forEach((film, index) => {
-    if (is18Plus(film) || isThaiLand(film)) {
-      list.splice(index, 1);
-    }
-  });
+  return list.filter(
+    (film) => !is18Plus(film) && !isThaiLand(film)
+  );
 };
 
-const renderSlider = (homeMovies) => {
+const renderSlider = (imgLink, homeMovies) => {
   const sliderContainer = document.querySelectorAll(".slider .item");
 
   for (let i = 0; i < 10; i++) {
     const img = document.createElement("img");
-    img.src=`https://img.ophim1.com/uploads/movies/${fomatPosterUrl(homeMovies[i].thumb_url)}`;
+    img.src=`${imgLink}/uploads/movies/${fomatPosterUrl(homeMovies[i].thumb_url)}`;
     img.alt=`${homeMovies[i].name}`;
     sliderContainer[i].appendChild(img);
-
-    const iframe = document.createElement("iframe");
-    iframe.className = "trailer";
-    iframe.allow = "autoplay; encrypted-media";
-    sliderContainer[i].appendChild(iframe);
   }
 
   sliderContainer[0].classList.add("active");
@@ -122,7 +98,7 @@ const renderContent = (homeMovies) => {
   contentContainer[0].classList.add("active");
 };
 
-const renderImgs = (homeMovies) => {
+const renderImgs = (imgLink, homeImgsLink) => {
   const sliderContainer = document.querySelectorAll(".thumb-slider .item");
 
   for (let i = 0; i < 10; i++) {
@@ -131,32 +107,12 @@ const renderImgs = (homeMovies) => {
 
   for (let i = 0; i < 10; i++) {
     sliderContainer[i].innerHTML += `
-    <img src="https://img.ophim1.com/uploads/movies/${fomatPosterUrl(homeMovies[i].thumb_url)}" alt="Thumbnail ${i + 1}" />
+    <img src="${imgLink}/uploads/movies/${fomatPosterUrl(homeMovies[i].thumb_url)}" alt="Thumbnail ${i + 1}" />
     `;
   }
 
   sliderContainer[0].classList.add("active");
 };
-
-const playTrailer = async (i) => {
-  const iframe = document.querySelector(".slider .item.active iframe");
-  const img = document.querySelector(".slider .item.active img");
-
-  const srcLink = await loadMovieTrailer(homeMovies[i].slug);
-  console.log(srcLink);
-  if (srcLink) {
-    img.style.display = "none";
-    iframe.src = srcLink;
-  } return;
-}
-
-function stopTrailer(i) {
-  const iframe = document.querySelectorAll(".slider .item iframe")[i];
-  const img = document.querySelectorAll(".slider .item img")[i];
-
-  img.style.display = "block";
-  iframe.src = "";
-}
 
 let setActive = 1;
 
@@ -176,8 +132,6 @@ const autoNext = () => {
       itemSlider[setActive].classList.add("active");
       contentSlider[setActive].classList.add("active");
       thumbSlider[setActive].classList.add("active");
-      stopTrailer(9);
-      await playTrailer(setActive);
     } else {
       itemSlider[setActive - 1].classList.remove("active");
       contentSlider[setActive - 1].classList.remove("active");
@@ -186,8 +140,6 @@ const autoNext = () => {
       itemSlider[setActive].classList.add("active");
       contentSlider[setActive].classList.add("active");
       thumbSlider[setActive].classList.add("active");
-      stopTrailer(setActive-1);
-      await playTrailer(setActive);
     }
 
     /*
@@ -229,8 +181,6 @@ const clickThumb = () => {
       itemSlider[index].classList.add("active");
       contentSlider[index].classList.add("active");
       thumbSlider[index].classList.add("active");
-      stopTrailer(setActive-1);
-      playTrailer(index);
 
       const scrollPosition =
         thumbSlider[index].offsetLeft -
@@ -314,23 +264,28 @@ document.addEventListener("DOMContentLoaded", async () => {
   await allCategory();
   await loadChineseMovies();
   await loadAnimeMovies();
-  await loadMovieTrailer("chu-thuat-hoi-chien-phan-3");
 
+  console.log(imgLink);
   console.log(home);
   console.log(homeMovies);
-  console.log(homeImgs);
+  console.log(homeImgsLink);
   console.log(actionMovies);
   console.log(animeMovies);
   console.log(chineseMovies);
 
-  removeSensitiveFilms(homeMovies);
-  removeSensitiveFilms(animeMovies);
-  removeSensitiveFilms(actionMovies);
-  removeSensitiveFilms(chineseMovies);
+  homeMovies = removeSensitiveFilms(homeMovies);
+  animeMovies = removeSensitiveFilms(animeMovies);
+  actionMovies = removeSensitiveFilms(actionMovies);
+  chineseMovies = removeSensitiveFilms(chineseMovies);
 
-  renderSlider(homeMovies);
+  console.log(homeMovies);
+  console.log(actionMovies);
+  console.log(animeMovies);
+  console.log(chineseMovies);
+
+  renderSlider(imgLink, homeMovies);
   renderContent(homeMovies);
-  renderImgs(homeMovies);
+  renderImgs(imgLink, homeMovies);
   clickThumb();
   autoNext();
 

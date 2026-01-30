@@ -1,99 +1,133 @@
-@media (max-width: 767px) {
-    body {
-        width: 100vw;
-    }
-
+@media (min-width: 768px) {
     header {
-        padding: 10px 20px;
-        width: 100vw;
+        padding: 10px 50px;
     }
 
-    #logo {
-        font-size: 27px;
+    .logo {
+        font-size: 33px;
     }
 
     .nav {
-        display: none;
-    }
-
-    .carousel {
-        height: auto;
-        width: auto;
+        display: contents;
     }
 
     .slider {
-        margin-top: 1rem;
         height: 60%;
     }
 
-    .carousel-recommended {
-        height: 80vh;
-    }
-
-    .carousel-recommended .slider .item img {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-        object-position: center 4rem;
-    }
-
-    .carousel-recommended .content-slider .item {
-        bottom: 60%;
-        left: 5%;
-        width: 650px;
-    }
-
     .carousel-recommended .content-slider .item .item-content h3 {
-        font-size: 1rem;
-        margin-bottom: 2vh;
+        font-size: 2rem;
+        margin-bottom: 1.2rem;
     }
 
     .carousel-recommended .content-slider .item .item-content p {
-        font-size: 2vh;
-        margin-bottom: 1.5vh;
+        font-size: 1.5rem;
+        margin-bottom: 1.2rem;
+        line-height: 2.3rem;
     }
 
     .carousel-recommended .content-slider .item .item-content .buttons button:nth-of-type(1) {
-        height: 5vh;
-        padding: 0 20px;
-        font-size: 1.5vh;
+        font-size: 1rem;
+    }
+
+    .thumb-slider .item {
+        width: 150px;
+        height: 100px;
+    }
+
+    .thumb-slider .item.active {
+        width: 175px;
+        height: 115px;
+    }
+
+    .combine {
+        height: 30%;
+    }
+
+    .movie-list {
+        grid-auto-columns: 185px;
+        height: 420px;
+    }
+
+    .movie-list .movie-item {
+        height: 320px;
+    }
+
+    .thinh-hanh h2,
+    .anime h2,
+    .hanh-dong h2,
+    .phim-trung h2 {
+        font-size: inherit;
+    }
+}
+
+@media (min-width: 1024px) {
+    header {
+        padding: 10px 50px;
+    }
+
+    .logo {
+        font-size: 33px;
+    }
+
+    .nav {
+        display: contents;
+    }
+
+    .slider {
+        height: 50%;
+    }
+
+    .carousel-recommended .content-slider .item .item-content h3 {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .carousel-recommended .content-slider .item .item-content p {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        line-height: 2.3rem;
+    }
+
+    .carousel-recommended .content-slider .item .item-content .buttons button:nth-of-type(1) {
+        font-size: 1.5rem;
+        padding: 20px 30px;
     }
 
     .carousel-recommended .content-slider .item .item-content .buttons button:nth-of-type(2),
     .carousel-recommended .content-slider .item .item-content .buttons button:nth-of-type(3) {
-        padding: 5px 5px;
-        height: 5vh;
-        width: 5vh;
-        font-size: 1.5vh;
-    }
-
-    .thumb-slider {
-        margin: 0 20px;
-        width: 90%;
-        right: 0;
-        height: 11vh;
+        font-size: 1.5rem;
+        height: 75px;
+        width: 75px;
     }
 
     .thumb-slider .item {
-        width: 30%;
-        height: 80%;
+        width: 170px;
+        height: 120px;
     }
 
     .thumb-slider .item.active {
-        width: 32%;
-        height: 90%;
-    }
-
-    .buttons {
-        margin-bottom: 1.5vh;
+        width: 205px;
+        height: 135px;
     }
 
     .combine {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        gap: 10px;
-        position: absolute;
-        bottom: 10px;
+        height: 30%;
+    }
+
+    .movie-list {
+        grid-auto-columns: 185px;
+        height: 420px;
+    }
+
+    .movie-list .movie-item {
+        height: 320px;
+    }
+
+    .thinh-hanh h2,
+    .anime h2,
+    .hanh-dong h2,
+    .phim-trung h2 {
+        font-size: 25px;
     }
 }
