@@ -81,7 +81,7 @@ const renderContent = (homeMovies) => {
         <h3>${homeMovies[i].name}</h3>
         <p>${homeMovies[i].origin_name}</p>
         <div class="buttons">
-          <button class="play-btn"> <i class="fa-solid fa-play"></i> <span>Xem ngay</span></button>
+          <button class="play-btn" onclick="goToWatchPage('${homeMovies[i].slug}')"><i class="fa-solid fa-play"></i> <span>Xem ngay</span></button>
           <button class="favourite-btn"><i class="fa-regular fa-heart"></i></button>
           <button class="share-btn">
             <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="text-[24px]" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg">
@@ -146,6 +146,7 @@ const autoNext = () => {
     lấy khoảng cách của item cần di chuyển cách mép trái container bao nhiêu px
     rồi trừ đi nửa chiều rộng container để item đó canh item ra giữa nhưng sẽ bị lệch về bên phải
     sau đó cộng với nửa chiều rộng item để nó không bị lệch phải nữa
+    omg làm sao tôi nghĩ ra đc cái này nhỉ ???? :vvvvv
     */
     const scrollPosition = thumbSlider[setActive].offsetLeft -
       thumbSliderContainer.offsetWidth / 2 +
@@ -202,7 +203,7 @@ const renderThinhHanh = (homeMovies) => {
 
   homeMovies.forEach((movie) => {
     thinhHanhContainer.innerHTML += `
-    <div class="movie-item">
+    <div class="movie-item" onclick="goToWatchPage('${movie.slug}')">
       <img src="https://img.ophim1.com/uploads/movies/${movie.thumb_url}" alt="${movie.name}" />
       <h4>${movie.name}</h4>
     </div>
@@ -216,7 +217,7 @@ const renderAnime = (animeMovies) => {
 
   animeMovies.forEach((movie) => {
     phimVietContainer.innerHTML += `
-    <div class="movie-item">
+    <div class="movie-item" onclick="goToWatchPage('${movie.slug}')">
       <img src="https://img.ophim1.com/uploads/movies/${movie.thumb_url}" alt="${movie.name}" />
       <h4>${movie.name}</h4>
     </div>
@@ -230,7 +231,7 @@ const renderAction = (actionMovies) => {
 
   actionMovies.forEach((movie) => {
     actionContainer.innerHTML += `
-      <div class="movie-item">
+      <div class="movie-item" onclick="goToWatchPage('${movie.slug}')">
         <img src="https://img.ophim1.com/uploads/movies/${movie.thumb_url}" alt="${movie.name}" />
         <h4>${movie.name}</h4>
       </div>
@@ -244,7 +245,7 @@ const renderChinese = (chineseMovies) => {
 
   chineseMovies.forEach((movie) => {
     chineseContainer.innerHTML += `
-    <div class="movie-item">
+    <div class="movie-item" onclick="goToWatchPage('${movie.slug}')">
       <img src="https://img.ophim1.com/uploads/movies/${movie.thumb_url}" alt="${movie.name}" />
       <h4>${movie.name}</h4>
     </div>
@@ -257,6 +258,10 @@ async function allCategory() {
   const data = await res.json();
   console.log(data);
 }
+
+const goToWatchPage = (slug) => {
+  window.location.href = `../watch/index.html?slug=${slug}`;
+};
 
 document.addEventListener("DOMContentLoaded", async () => {
   await loadMovies();

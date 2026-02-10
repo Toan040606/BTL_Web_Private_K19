@@ -71,57 +71,78 @@
     }
 
     .nav {
-        display: contents;
+        display: flex;
+        gap: 50px;
     }
 
     .slider {
-        height: 50%;
+        height: 100%;
     }
 
     .carousel-recommended .content-slider .item .item-content h3 {
-        font-size: 3rem;
+        font-size: 2rem;
         margin-bottom: 1.5rem;
     }
 
     .carousel-recommended .content-slider .item .item-content p {
-        font-size: 2rem;
+        font-size: 1rem;
         margin-bottom: 1.5rem;
         line-height: 2.3rem;
     }
 
     .carousel-recommended .content-slider .item .item-content .buttons button:nth-of-type(1) {
-        font-size: 1.5rem;
-        padding: 20px 30px;
+        font-size: 1rem;
+        padding: 10px 30px;
     }
 
     .carousel-recommended .content-slider .item .item-content .buttons button:nth-of-type(2),
     .carousel-recommended .content-slider .item .item-content .buttons button:nth-of-type(3) {
-        font-size: 1.5rem;
-        height: 75px;
-        width: 75px;
+        font-size: 1rem;
+        height: 40px;
+        width: 40px;
+    }
+
+    .content-slider {
+        width: 40%;
+        bottom: 50%;
+    }
+
+    .thumb-slider-container {
+        width: 60%;
     }
 
     .thumb-slider .item {
-        width: 170px;
-        height: 120px;
+        width: 150px;
+        height: 100px;
     }
 
     .thumb-slider .item.active {
-        width: 205px;
-        height: 135px;
+        width: 175px;
+        height: 105px;
+    }
+
+    .movie-list::scroll-button(right),
+    .movie-list::scroll-button(left) {
+        display: block;
     }
 
     .combine {
+        padding: 20px;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        bottom: 20%;
         height: 30%;
     }
 
     .movie-list {
         grid-auto-columns: 185px;
-        height: 420px;
+        height: 410px;
     }
 
     .movie-list .movie-item {
-        height: 320px;
+        height: 300px;
     }
 
     .thinh-hanh h2,
@@ -129,5 +150,19 @@
     .hanh-dong h2,
     .phim-trung h2 {
         font-size: 25px;
+    }
+
+    footer {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .left {
+        width: auto;
+    }
+
+    .right {
+        flex-direction: row;
     }
 }
