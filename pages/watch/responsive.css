@@ -1,0 +1,42 @@
+@media (min-width: 768px) {
+    header {
+        padding: 10px 50px;
+    }
+
+    .logo {
+        font-size: 33px;
+    }
+
+    .nav {
+        display: contents;
+    }
+}
+
+@media (min-width: 1024px) {
+    header {
+        padding: 10px 50px;
+    }
+
+    .logo {
+        font-size: 33px;
+    }
+
+    .nav {
+        display: flex;
+        gap: 50px;
+    }
+
+    footer {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .left {
+        width: auto;
+    }
+
+    .right {
+        flex-direction: row;
+    }
+}
