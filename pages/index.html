@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>VPlay</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">VPlay</div>
+  <nav class="menu">
+    <a>Trang chủ</a>
+    <a>Phim bộ</a>
+    <a class="active">Phim lẻ</a>
+    <a>Anime</a>
+    <a>Phim chiếu rạp</a>
+  </nav>
+  <div class="actions">🔍 👤</div>
+</header>
+
+<section class="hero fpt-hero">
+
+  <div class="hero-slides">
+
+    <div class="hero-slide active" data-index="0"
+      style="background-image:url('https://img.ophim.live/uploads/movies/nhung-ke-la-mat-poster.jpg')">
+      <div class="hero-overlay"></div>
+      <div class="hero-info">
+        <h1>Những Kẻ Lạ Mặt</h1>
+        <p>2008 · Kinh dị · 1h25p · Mỹ</p>
+        <button class="btn-play">▶ Xem ngay</button>
+      </div>
+    </div>
+
+    <div class="hero-slide" data-index="1"
+      style="background-image:url('https://img.ophim.live/uploads/movies/hau-due-mat-troi-poster.jpg')">
+      <div class="hero-overlay"></div>
+      <div class="hero-info">
+        <h1>Hậu Duệ Mặt Trời</h1>
+        <p>2016 · Tình cảm · Hàn Quốc</p>
+        <button class="btn-play">▶ Xem ngay</button>
+      </div>
+    </div>
+
+    <div class="hero-slide" data-index="2"
+      style="background-image:url('https://img.ophim.live/uploads/movies/goblin-poster.jpg')">
+      <div class="hero-overlay"></div>
+      <div class="hero-info">
+        <h1>Yêu Tinh</h1>
+        <p>2017 · Lãng mạn · Hàn Quốc</p>
+        <button class="btn-play">▶ Xem ngay</button>
+      </div>
+    </div>
+
+      
+
+  </div>
+
+  <div class="hero-thumbs">
+    <img src="https://cdn.moveek.com/storage/media/cache/large/1UfsCTzIMj.jpg" onclick="goHero(0)">
+    <img src="https://img.ophim.live/uploads/movies/hau-due-mat-troi-thumb.jpg" onclick="goHero(1)">
+    <img src="https://static2.vieon.vn/vieplay-image/thumbnail_big_v4/2021/01/07/13hjdibi_yeu-tinh_horizontal-thumbnail-png_1267_712.jpg" onclick="goHero(2)">
+  </div>
+
+</section>
+
+<section class="block">
+  <div class="block-header">
+    <h2>Thịnh hành</h2>
+    <div class="nav-btns">
+      <button onclick="scrollRow('trending', -1)">❮</button>
+      <button onclick="scrollRow('trending', 1)">❯</button>
+    </div>
+  </div>
+  <div class="row-wrapper">
+    <div class="row" id="trending"></div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="block-header">
+    <h2>Phim lẻ mới cập nhật</h2>
+    <div class="nav-btns">
+      <button onclick="scrollRow('anime', -1)">❮</button>
+      <button onclick="scrollRow('anime', 1)">❯</button>
+    </div>
+  </div>
+  <div class="row-wrapper">
+    <div class="row" id="anime"></div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="block-header">
+    <h2>Phim tâm lý đỉnh cao</h2>
+    <div class="nav-btns">
+      <button onclick="scrollRow('psychology', -1)">❮</button>
+      <button onclick="scrollRow('psychology', 1)">❯</button>
+    </div>
+  </div>
+  <div class="row-wrapper">
+    <div class="row" id="psychology"></div>
+  </div>
+</section>
+<section class="block">
+  <div class="block-header">
+    <h2>Phim tình cảm lãng mạn</h2>
+    <div class="nav-btns">
+      <button onclick="scrollRow('romance', -1)">❮</button>
+      <button onclick="scrollRow('romance', 1)">❯</button>
+    </div>
+  </div>
+  <div class="row-wrapper">
+    <div class="row" id="romance"></div>
+  </div>
+</section>
+<section class="block">
+  <div class="block-header">
+    <h2>Phim hành động mãn nhãn</h2>
+    <div class="nav-btns">
+      <button onclick="scrollRow('action', -1)">❮</button>
+      <button onclick="scrollRow('action', 1)">❯</button>
+    </div>
+  </div>
+  <div class="row-wrapper">
+    <div class="row" id="action"></div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="block-header">
+    <h2>Phim hài giải trí</h2>
+    <div class="nav-btns">
+      <button onclick="scrollRow('comedy', -1)">❮</button>
+      <button onclick="scrollRow('comedy', 1)">❯</button>
+    </div>
+  </div>
+  <div class="row-wrapper">
+    <div class="row" id="comedy"></div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="block-header">
+    <h2>Phim kinh dị rùng rợn</h2>
+    <div class="nav-btns">
+      <button onclick="scrollRow('horror', -1)">❮</button>
+      <button onclick="scrollRow('horror', 1)">❯</button>
+    </div>
+  </div>
+  <div class="row-wrapper">
+    <div class="row" id="horror"></div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="block-header">
+    <h2>Khoa học viễn tưởng</h2>
+    <div class="nav-btns">
+      <button onclick="scrollRow('scifi', -1)">❮</button>
+      <button onclick="scrollRow('scifi', 1)">❯</button>
+    </div>
+  </div>
+  <div class="row-wrapper">
+    <div class="row" id="scifi"></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <h3>Công ty cổ phần nhóm 2</h3>
+      <p>:v</p>
+      <div class="footer-logo">VPlay</div>
+    </div>
+    <div class="footer-col">
+      <h4>Về VPlay</h4>
+      <a href="#">Giới thiệu</a>
+      <a href="#">Thông báo</a>
+    </div>
+    <div class="footer-col">
+      <h4>Liên hệ</h4>
+      <p>Hotline: <span>0364066116</span></p>
+      <p>Email: trankhanhtoan2006qt@gmail.com</p>
+    </div>
+  </div>
+</footer>
+
+<script src="index.js"></script>
+</body>
+</html>
