@@ -970,3 +970,187 @@ renderMovieRow("trendingRowme", TCfilms, "film-cardme");
 renderMovieRow("trendingRowhd", HDfilms, "film-cardme"); 
 renderMovieRow("trendingRowpm", PMfilms, "film-cardme"); 
 renderMovieRow("trendingRowth", THfilms, "film-cardme"); 
+const vplayStyles = document.createElement("style");
+vplayStyles.innerHTML = `
+    .vplay-search-container {
+        display: flex;
+        align-items: center;
+        position: relative;
+        height: 42px;
+    }
+    .vplay-search-box {
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 25px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        width: 42px;
+        height: 42px;
+        overflow: hidden;
+        border: 1px solid transparent;
+        flex-direction: row-reverse;
+    }
+    .vplay-search-box.active {
+        width: 280px;
+        background: rgba(0, 0, 0, 0.9);
+        border-color: #58a618;
+        box-shadow: 0 0 10px rgba(88, 166, 24, 0.4);
+    }
+    #vplayInput {
+        flex: 1;
+        background: none;
+        border: none;
+        outline: none;
+        color: white;
+        padding: 0;
+        font-size: 14px;
+        width: 0;
+        opacity: 0;
+        transition: 0.3s;
+    }
+    .vplay-search-box.active #vplayInput {
+        padding: 0 15px;
+        width: 100%;
+        opacity: 1;
+    }
+    .vplay-search-trigger {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: white;
+        background: none;
+        border: none;
+        font-size: 16px;
+    }
+    #vplayOverlay {
+        position: fixed;
+        top: 80px; 
+        left: 0; 
+        width: 100%; 
+        height: calc(100vh - 80px);
+        background: rgba(10, 10, 10, 0.98);
+        z-index: 9999;
+        display: none;
+        padding: 40px 60px;
+        overflow-y: auto;
+    }
+    #vplayOverlay.show { 
+        display: block; 
+    }
+    .vplay-search-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+        gap: 30px;
+    }
+`;
+document.head.appendChild(vplayStyles);
+
+document.addEventListener('DOMContentLoaded', () => {
+    const allMovies = [
+        ...films, ...actionFilms, ...humorousfilms, 
+        ...TCfilms, ...HDfilms, ...PMfilms, ...THfilms
+    ];
+    
+    const uniqueMovies = Array.from(new Map(allMovies.map(m => [m.title, m])).values());
+
+    const headerRight = document.querySelector('.header-right');
+    if (!headerRight) return;
+
+    const oldBtn = headerRight.querySelector('.icon-btn:not(.avatar)');
+    
+    const searchContainer = document.createElement('div');
+    searchContainer.className = 'vplay-search-container';
+    searchContainer.innerHTML = `
+        <div class="vplay-search-box" id="vplayBox">
+            <button class="vplay-search-trigger" id="vplayTrigger">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+            <input type="text" id="vplayInput" placeholder="Tìm tên phim...">
+        </div>
+    `;
+
+    if (oldBtn) {
+        oldBtn.replaceWith(searchContainer);
+    }
+
+    const overlay = document.createElement('div');
+    overlay.id = 'vplayOverlay';
+    overlay.innerHTML = `
+        <h3 style="margin-bottom:25px; color:#58a618; font-family: sans-serif;">Kết quả tìm kiếm:</h3>
+        <div class="vplay-search-grid" id="vplayGrid"></div>
+    `;
+    document.body.appendChild(overlay);
+
+    const vplayBox = document.getElementById('vplayBox');
+    const vplayInput = document.getElementById('vplayInput');
+    const vplayTrigger = document.getElementById('vplayTrigger');
+    const vplayGrid = document.getElementById('vplayGrid');
+
+    vplayTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        vplayBox.classList.toggle('active');
+        if (vplayBox.classList.contains('active')) {
+            vplayInput.focus();
+        } else {
+            closeVplaySearch();
+        }
+    });
+
+    function removeVietnameseTones(str) {
+        return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d");
+    }
+
+    vplayInput.addEventListener('input', function() {
+        const val = this.value.trim();
+        const cleanVal = removeVietnameseTones(val);
+
+        if (val.length > 0) {
+            overlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+
+            const filtered = uniqueMovies.filter(m => 
+                removeVietnameseTones(m.title).includes(cleanVal)
+            );
+            renderVplayResults(filtered);
+        } else {
+            closeVplaySearch();
+        }
+    });
+
+    function renderVplayResults(data) {
+        if (data.length === 0) {
+            vplayGrid.innerHTML = `<p style="color:gray; font-family: sans-serif;">Không tìm thấy phim nào...</p>`;
+            return;
+        }
+
+        vplayGrid.innerHTML = data.map(f => {
+            const validLink = f.link && f.link !== "#" ? f.link : "https://www.google.com/search?q=" + encodeURIComponent(f.title);
+            
+            return `
+                <div class="film-cardme" onclick="window.open('${validLink}', '_blank')" style="cursor:pointer">
+                    <div class="film-posterme">
+                        <img src="${f.poster}" alt="${f.title}">
+                    </div>
+                    <div class="film-titleme" style="color:white; font-family: sans-serif; margin-top:10px; font-size:14px;">${f.title}</div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    function closeVplaySearch() {
+        overlay.classList.remove('show');
+        document.body.style.overflow = 'auto';
+        vplayBox.classList.remove('active');
+        vplayInput.value = '';
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape") closeVplaySearch();
+    });
+
+    vplayBox.addEventListener('click', (e) => e.stopPropagation());
+});

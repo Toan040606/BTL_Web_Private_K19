@@ -668,10 +668,123 @@ renderMovieRow("trendingRow", films, "film-card");
 renderMovieRow("trendingRowac", actionFilms, "film-cardac");
 renderMovieRow("trendingRowh", humorousfilms, "film-cardh");
 renderMovieRow("trendingRowme", TCfilms, "film-cardme");
-renderMovieRow("trendingRowhd", HDfilms, "film-cardme"); 
-renderMovieRow("trendingRowpm", PMfilms, "film-cardme"); 
-renderMovieRow("trendingRowth", THfilms, "film-cardme"); 
 
+const style = document.createElement('style');
+style.innerHTML = `
+    .vplay-search-box {
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 25px;
+        transition: all 0.4s ease;
+        width: 42px; 
+        height: 42px;
+        overflow: hidden;
+        border: 1px solid transparent;
+        flex-direction: row-reverse;
+    }
+    .vplay-search-box.active {
+        width: 280px;
+        background: rgba(0, 0, 0, 0.9);
+        border-color: #58a618;
+        box-shadow: 0 0 10px rgba(88, 166, 24, 0.5);
+    }
+    #vplayInput {
+        flex: 1;
+        background: none;
+        border: none;
+        outline: none;
+        color: white;
+        padding: 0;
+        font-size: 14px;
+        width: 0;
+        opacity: 0;
+        transition: 0.3s;
+    }
+    .vplay-search-box.active #vplayInput {
+        padding: 0 15px;
+        width: 100%;
+        opacity: 1;
+    }
+    .search-btn-trigger {
+        width: 42px; height: 42px; min-width: 42px;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; color: white; background: none; border: none;
+    }
+`;
+document.head.appendChild(style);
+const searchDataAll = [...films, ...actionFilms, ...humorousfilms, ...TCfilms];
 
+document.addEventListener('DOMContentLoaded', () => {
+    const headerRight = document.querySelector('.header-right');
+    const oldBtn = headerRight ? headerRight.querySelector('.icon-btn:not(.avatar)') : null;
 
+    if (!oldBtn) return;
 
+    const searchBox = document.createElement('div');
+    searchBox.className = 'vplay-search-box';
+    searchBox.id = 'vplaySearchBox';
+    searchBox.innerHTML = `
+        <button class="search-btn-trigger" id="vplayTrigger">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <input type="text" id="vplayInput" placeholder="Tìm tên phim...">
+    `;
+    oldBtn.replaceWith(searchBox);
+    const overlay = document.createElement('div');
+    overlay.id = 'vplaySearchOverlay';
+    overlay.style.cssText = "position:fixed; top:80px; left:0; width:100%; height:100vh; background:rgba(10,10,10,0.98); z-index:9999; display:none; padding:40px 60px; overflow-y:auto;";
+    overlay.innerHTML = `
+        <h3 style="color:#58a618; margin-bottom:20px; font-family:sans-serif;">Kết quả tìm kiếm cho: <span id="searchKey" style="color:#fff"></span></h3>
+        <div id="vplayResults" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:25px;"></div>
+    `;
+    document.body.appendChild(overlay);
+
+    const vplayInput = document.getElementById('vplayInput');
+    const vplayTrigger = document.getElementById('vplayTrigger');
+    const vplayResults = document.getElementById('vplayResults');
+    const searchKeyDisplay = document.getElementById('searchKey');
+    vplayTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        searchBox.classList.toggle('active');
+        if (searchBox.classList.contains('active')) {
+            vplayInput.focus();
+        } else {
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    vplayInput.addEventListener('input', function() {
+        const val = this.value.trim().toLowerCase();
+        if (val.length > 0) {
+            overlay.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            searchKeyDisplay.innerText = this.value;
+
+            const filtered = searchDataAll.filter(m => m.title.toLowerCase().includes(val));
+            
+            if (filtered.length === 0) {
+                vplayResults.innerHTML = `<p style="color:gray;">Không tìm thấy phim phù hợp...</p>`;
+            } else {
+                vplayResults.innerHTML = filtered.map(f => `
+                    <div class="film-cardme" onclick="window.open('${f.link || '#'}', '_blank')" style="cursor:pointer">
+                        <img src="${f.poster}" style="width:100%; border-radius:10px;">
+                        <p style="color:white; margin-top:10px; font-size:14px; text-align:center;">${f.title}</p>
+                    </div>
+                `).join("");
+            }
+        } else {
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+    document.addEventListener('click', (e) => {
+        if (!searchBox.contains(e.target)) {
+            searchBox.classList.remove('active');
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            vplayInput.value = '';
+        }
+    });
+});
