@@ -65,7 +65,7 @@ function scrollRow(rowId, dir) {
   if (index < 0) index = 0;
   if (index > total - visible) index = total - visible;
 
-  const cardWidth = cards[0].offsetWidth + 16; // gap = 16
+  const cardWidth = cards[0].offsetWidth + 16; 
   row.style.transform = `translateX(-${index * cardWidth}px)`;
   row.dataset.index = index;
 }
