@@ -27,7 +27,7 @@ function displayMovieDetails(data) {
         episodeListContainer.innerHTML = movie.episodes[0].server_data.map((episode) => `
             <div class="episode-item" style="background-color: var(--nav-color);">
                 <img src="https://img.ophim.live/uploads/movies/${movie.poster_url}" alt="${movie.name}">
-                <a href="${episode.link_embed}" target="_blank">${movie.name} - ${episode.name}</a>
+                <a href="${window.location.pathname}?name=${slug}&episode=${episode.slug}">${movie.name} - ${episode.name}</a>
             </div>
         `).join("");
     } else {
@@ -40,7 +40,7 @@ function displayMovieDetails(data) {
         episodeListContainer.innerHTML = movie.episodes[0].server_data.map((episode, index) => `
             <div class="episode-item">
                 <img src="https://img.ophim.live/uploads/movies/${movie.poster_url}" alt="${movie.name}">
-                <a href="${episode.link_embed}" target="_blank">${movie.name} - Tập ${index + 1}</a>
+                <a href="${window.location.pathname}?name=${slug}&episode=${episode.slug}">${movie.name} - Tập ${index + 1}</a>
             </div>
         `).join("");
 
@@ -48,6 +48,15 @@ function displayMovieDetails(data) {
         if (episodeItem[slugEpisode - 1]) {
             episodeItem[slugEpisode - 1].style.backgroundColor = "#333";
         }
+
+        const episodeList = document.querySelector(".episode-list");
+        const scrollPosition = episodeItem[slugEpisode - 1].offsetTop 
+            - episodeList.offsetHeight / 2
+            + episodeItem[slugEpisode - 1].offsetHeight / 2;
+        episodeList.scrollTo({
+            top: scrollPosition,
+            behavior: "smooth"
+        });
     }
 }
 

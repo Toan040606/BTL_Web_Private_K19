@@ -26,6 +26,23 @@
         gap: 50px;
     }
 
+    .watch-movie {
+        display: flex;
+        padding: 4em;
+        gap: 2em;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .watch {
+        width: 100%;
+    }
+
+    .episode-list-container {
+        width: 50%;
+        margin-left: 2rem;
+    }
+
     footer {
         flex-direction: row;
         align-items: center;
