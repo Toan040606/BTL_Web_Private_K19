@@ -30,12 +30,13 @@ async function loadCategory(rowId, slug, limit = 15) {
         usedMovies.add(movie.slug);
         count++;
 
-        const img = movie.poster_url?.startsWith("http")
-          ? movie.poster_url
-          : IMG_BASE + movie.poster_url;
+        const img = movie.thumb_url?.startsWith("http")
+          ? movie.thumb_url
+          : IMG_BASE + movie.thumb_url;
 
         const card = document.createElement("div");
         card.className = "card";
+        card.onclick = () => goToWatchPage(movie.slug);
         card.innerHTML = `
           <img src="${img}" alt="${movie.name}">
           <div class="title">${movie.name}</div>
@@ -85,6 +86,10 @@ function scrollRow(rowId, dir) {
   row.style.transform = `translateX(-${index * cardWidth}px)`;
   row.dataset.index = index;
 }
+
+const goToWatchPage = (slug) => {
+  window.location.href = `../watch/index.html?name=${slug}`;
+};
 
 loadCategory("trending", "phim-moi-cap-nhat", 15);
 loadCategory("anime", "phim-le", 15);
