@@ -206,6 +206,15 @@ const renderThinhHanh = (homeMovies) => {
     <div class="movie-item" onclick="goToWatchPage('${movie.slug}')">
       <img src="https://img.ophim1.com/uploads/movies/${movie.thumb_url}" alt="${movie.name}" />
       <h4>${movie.name}</h4>
+      <div class="movie-card">
+        <img src="https://img.ophim1.com/uploads/movies/${fomatPosterUrl(movie.thumb_url)}" alt="${movie.name}" />
+        <h4>${movie.name}</h4>
+        <p>${movie.origin_name}</p>
+        <div class="buttons">
+          <button class="play-btn" onclick="goToWatchPage('${movie.slug}')"><i class="fa-solid fa-play"></i> <span>Xem ngay</span></button>
+          <button class="favourite-btn"><i class="fa-regular fa-heart"></i></button>
+        </div>
+      </div>
     </div>
   `;
   });
@@ -220,6 +229,15 @@ const renderAnime = (animeMovies) => {
     <div class="movie-item" onclick="goToWatchPage('${movie.slug}')">
       <img src="https://img.ophim1.com/uploads/movies/${movie.thumb_url}" alt="${movie.name}" />
       <h4>${movie.name}</h4>
+      <div class="movie-card">
+        <img src="https://img.ophim1.com/uploads/movies/${fomatPosterUrl(movie.thumb_url)}" alt="${movie.name}" />
+        <h4>${movie.name}</h4>
+        <p>${movie.origin_name}</p>
+        <div class="buttons">
+          <button class="play-btn" onclick="goToWatchPage('${movie.slug}')"><i class="fa-solid fa-play"></i> <span>Xem ngay</span></button>
+          <button class="favourite-btn"><i class="fa-regular fa-heart"></i></button>
+        </div>
+      </div>
     </div>
     `;
   });
@@ -234,6 +252,15 @@ const renderAction = (actionMovies) => {
       <div class="movie-item" onclick="goToWatchPage('${movie.slug}')">
         <img src="https://img.ophim1.com/uploads/movies/${movie.thumb_url}" alt="${movie.name}" />
         <h4>${movie.name}</h4>
+        <div class="movie-card">
+        <img src="https://img.ophim1.com/uploads/movies/${fomatPosterUrl(movie.thumb_url)}" alt="${movie.name}" />
+        <h4>${movie.name}</h4>
+        <p>${movie.origin_name}</p>
+        <div class="buttons">
+          <button class="play-btn" onclick="goToWatchPage('${movie.slug}')"><i class="fa-solid fa-play"></i> <span>Xem ngay</span></button>
+          <button class="favourite-btn"><i class="fa-regular fa-heart"></i></button>
+        </div>
+      </div>
       </div>
       `;
   });
@@ -248,6 +275,15 @@ const renderChinese = (chineseMovies) => {
     <div class="movie-item" onclick="goToWatchPage('${movie.slug}')">
       <img src="https://img.ophim1.com/uploads/movies/${movie.thumb_url}" alt="${movie.name}" />
       <h4>${movie.name}</h4>
+      <div class="movie-card">
+        <img src="https://img.ophim1.com/uploads/movies/${fomatPosterUrl(movie.thumb_url)}" alt="${movie.name}" />
+        <h4>${movie.name}</h4>
+        <p>${movie.origin_name}</p>
+        <div class="buttons">
+          <button class="play-btn" onclick="goToWatchPage('${movie.slug}')"><i class="fa-solid fa-play"></i> <span>Xem ngay</span></button>
+          <button class="favourite-btn"><i class="fa-regular fa-heart"></i></button>
+        </div>
+      </div>
     </div>
     `;
   });
