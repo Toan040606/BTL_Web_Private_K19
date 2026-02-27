@@ -121,9 +121,46 @@
         height: 105px;
     }
 
+    .thinh-hanh,
+    .anime,
+    .hanh-dong,
+    .phim-trung {
+        position: relative;
+    }
+
     .movie-list::scroll-button(right),
     .movie-list::scroll-button(left) {
-        display: block;
+        content: '>';
+        position: absolute;
+        width: 1006%;
+        top: 9%;
+        right: -1.5%;
+        height: 300px;
+        width: 35px;
+        font-size: 50px;
+        font-family: monospace;
+        background: none;
+        border: none;
+        color: rgb(168, 168, 168);
+        cursor: pointer;
+        border-radius: 20px;
+        transition: 0.2s ease;
+    }
+
+    .movie-list::scroll-button(left) {
+        content: '<';
+        left: -1.9%;
+    }
+
+    .movie-list::scroll-button(right):hover,
+    .movie-list::scroll-button(left):hover {
+        color: white;
+        background-color: black;
+    }
+
+    .movie-list::scroll-button(right):disabled,
+    .movie-list::scroll-button(left):disabled {
+        opacity: 0;
     }
 
     .combine {

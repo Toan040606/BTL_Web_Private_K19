@@ -350,6 +350,7 @@ ul {
 }
 
 .movie-list .movie-item {
+    position: relative;
     height: 200px;
     cursor: pointer;
     scroll-snap-align: center;
@@ -371,50 +372,6 @@ ul {
 .hanh-dong h2,
 .phim-trung h2 {
     font-size: 20px;
-}
-
-/* scrolling button */
-.thinh-hanh,
-.anime,
-.hanh-dong,
-.phim-trung {
-    position: relative;
-}
-
-.movie-list::scroll-button(right),
-.movie-list::scroll-button(left) {
-    content: '>';
-    position: absolute;
-    width: 106%;
-    top: 9%;
-    right: -3%;
-    height: 300px;
-    width: 35px;
-    font-size: 50px;
-    font-family: monospace;
-    background: none;
-    border: none;
-    color: rgb(168, 168, 168);
-    cursor: pointer;
-    border-radius: 20px;
-    transition: 0.2s ease;
-    display: none;
-}
-
-.movie-list::scroll-button(left) {
-    content: '<';
-    left: -3%;
-}
-
-.movie-list::scroll-button(right):hover,
-.movie-list::scroll-button(left):hover {
-    color: white;
-    background-color: black;
-}
-
-.movie-list::scroll-button(right):disabled,
-.movie-list::scroll-button(left):disabled {
-    opacity: 0;
 }
 
 /* footer */
@@ -473,4 +430,65 @@ footer li:hover a {
 
 .email {
     text-overflow: ellipsis;
+}
+
+.movie-card {
+    position: absolute;
+    top: 70px;
+    left: 0px;
+    width: 220px;
+    background-color: var(--black-smoke);
+    border-radius: 15px;
+    padding: 15px;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1);
+    transition: 0.3s ease;
+    z-index: 20;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+}
+
+.movie-card img {
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.movie-item:hover .movie-card {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(2);
+}
+
+.movie-card h4 {
+    font-size: 12px;
+    padding: 0 !important;
+}
+
+.movie-card p {
+    font-size: 10px;
+    margin-bottom: 10px ;
+}
+
+.movie-card .buttons .play-btn {
+    padding: 5px 10px;
+    font-size: 0.5rem;
+    background: var(--brand-background-color);
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 50px;
+}
+
+.movie-card .buttons .favourite-btn {
+    padding: 5px 5px;
+    height: 25px;
+    width: 25px;
+    font-size: 0.5rem;
+    background: rgba(255, 255, 255, 0.185);
+    border: 1px solid rgba(201, 201, 201, 0.774);
+    color: rgba(255, 255, 255, 0.836);
+    border-radius: 100%;
+    cursor: pointer;
 }
