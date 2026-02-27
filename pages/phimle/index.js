@@ -88,7 +88,7 @@ function scrollRow(rowId, dir) {
 }
 
 const goToWatchPage = (slug) => {
-  window.location.href = `../watch/index.html?name=${slug}`;
+  window.location.href = `../watch/index.html?name=${slug}&episode=`;
 };
 
 loadCategory("trending", "phim-moi-cap-nhat", 15);

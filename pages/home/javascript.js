@@ -296,7 +296,7 @@ async function allCategory() {
 }
 
 const goToWatchPage = (slug) => {
-  window.location.href = `../watch/index.html?name=${slug}`;
+  window.location.href = `../watch/index.html?name=${slug}&episode=`;
 };
 
 document.addEventListener("DOMContentLoaded", async () => {

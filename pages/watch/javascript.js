@@ -6,7 +6,6 @@ const apiUrl = `https://ophim1.com/v1/api/phim/${slug}`;
 async function loadMovieDetails() {
     const res = await fetch(apiUrl);
     const data = await res.json();
-    autoFixNullEpisode(data);
     displayMovieDetails(data);
     displayMovieInfo(data);
 }
@@ -15,6 +14,18 @@ function displayMovieDetails(data) {
     console.log(data);
     const movie = data.data.item;
     console.log(movie);
+
+    if (data.data.item.episodes[0].server_data[0].slug === "") {
+        const playerSection = document.querySelector(".watch");
+        playerSection.innerHTML = `
+            <div class="no-episode" style="text-align: center; padding: 50px; color: #fff; background-color: black; border-radius: 10px;">
+                <p>Phim chưa có tập nào hoặc tập đang được cập nhật. Vui lòng quay lại sau.</p>
+            </div>
+        `;
+        return;
+    }
+
+    autoFixNullEpisode(data);
 
     if (slugEpisode === "full") {
         slugEpisode = 1;
@@ -38,7 +49,7 @@ function displayMovieDetails(data) {
 
         const episodeListContainer = document.querySelector(".episode-list");
         episodeListContainer.innerHTML = movie.episodes[0].server_data.map((episode, index) => `
-            <div class="episode-item">
+            <div onclick="goToEpisode('${slug}', '${episode.slug}')" class="episode-item">
                 <img src="https://img.ophim.live/uploads/movies/${movie.poster_url}" alt="${movie.name}">
                 <a href="${window.location.pathname}?name=${slug}&episode=${episode.slug}">${movie.name} - Tập ${index + 1}</a>
             </div>
@@ -116,6 +127,10 @@ function toggleContent() {
 function autoFixNullEpisode(data) {
     if (slugEpisode) return;
     window.location.href = `${window.location.pathname}?name=${slug}&episode=${data.data.item.episodes[0].server_data[0].slug}`;
+}
+
+function goToEpisode(slug, episodeSlug) {
+    window.location.href = `${window.location.pathname}?name=${slug}&episode=${episodeSlug}`;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
