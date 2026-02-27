@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+Caucasian+Albanian&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+:root {
+    --font-opensans: 'Open Sans', sans-serif;
+    --font-montserrat: 'Montserrat', sans-serif;
+    --brand-color: #06ad00;
+    --brand-background-color: linear-gradient(277deg,rgba(6, 173, 0, 1) 0%, rgb(40, 172, 36) 100%);
+    --nav-color: #ffffffb2;
+    --text-color: #222222;
+    --header-height: 5rem;
+    --font-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --black-smoke: #0d0d0c
+}
+
+
