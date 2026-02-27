@@ -62,8 +62,8 @@ const renderSlider = (imgLink, homeMovies) => {
 
   for (let i = 0; i < 10; i++) {
     const img = document.createElement("img");
-    img.src=`${imgLink}/uploads/movies/${fomatPosterUrl(homeMovies[i].thumb_url)}`;
-    img.alt=`${homeMovies[i].name}`;
+    img.src = `${imgLink}/uploads/movies/${fomatPosterUrl(homeMovies[i].thumb_url)}`;
+    img.alt = `${homeMovies[i].name}`;
     sliderContainer[i].appendChild(img);
   }
 
@@ -269,6 +269,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   await allCategory();
   await loadChineseMovies();
   await loadAnimeMovies();
+
+  setTimeout(() => {
+    document.getElementById("intro").classList.add("fade-out");
+  }, 2000);
 
   console.log(imgLink);
   console.log(home);
