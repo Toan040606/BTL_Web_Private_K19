@@ -80,7 +80,11 @@ body {
     background-color: var(--bg-black);
     font-family: 'Arial', sans-serif;
     margin: 0;
-    padding: 0px;
+    padding: 0;
+}
+
+.movie-section{
+    padding: 0 100px;
 }
 
 .section-header{
@@ -108,14 +112,16 @@ body {
 .movie-grid{
     display: flex;
     gap: 12px;
-    overflow: hidden; 
+    overflow-x: hidden;
+    scroll-behavior: smooth;
     padding: 20px 10px 100px 10px;
     transition: transform 0.45s ease;
 }
 
-.movie-card{
+.movie-card {
+    flex: 0 0 calc((100% - (15px * 5)) / 6); 
+    min-width: calc((100% - (15px * 5)) / 6);
     position: relative;
-    width: 300px;
 }
 
 .card{
@@ -126,7 +132,7 @@ body {
 
 .poster {
     width: 100%;
-    border-radius: 6px;
+    border-radius: 12px;
     object-fit: cover;
     aspect-ratio: 2/3;
 }
@@ -144,7 +150,7 @@ body {
     top: 0;
     left: 0;
     width: 300px; 
-    height: 360px;
+    height: 420px;
     background: var(--card-bg);
     border-radius: 8px;
     overflow: hidden;
@@ -171,8 +177,8 @@ body {
 .hover-banner {
     border-radius: 10px;
     width: 100%;
-    height: 200px;
-    object-fit: cover;
+    height: 250px;
+    object-fit: fill;
 }
 
 .hover-content {
@@ -245,4 +251,72 @@ body {
 }
 
 /* hieu ung vuot hien phim */
+.slider-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+
+.movie-grid {
+    display: flex;
+    gap: 15px;
+    overflow-x: hidden; 
+    scroll-behavior: smooth; 
+    padding: 20px 0;
+}
+
+.ctrl-btn {
+    position: absolute;
+    top: 40%; 
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: none; 
+    transition: background 0.3s;
+}
+
+.slider-wrapper:hover .ctrl-btn {
+    display: block; 
+}
+
+.ctrl-btn:hover {
+    background: var(--brand-color, #ff5722);
+}
+
+.prev-btn { left: 10px; }
+.next-btn { right: 10px; }
+
+/* phat video modal */
     
+.video-modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal-content {
+    position: relative;
+    width: 80%;
+    max-width: 900px;
+}
+.close-modal {
+    position: absolute;
+    top: -40px; right: 0;
+    color: white; font-size: 30px;
+    cursor: pointer;
+}
+#video-player {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+}
