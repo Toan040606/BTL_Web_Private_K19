@@ -86,7 +86,7 @@ async function renderMovieApp() {
 }
 
 function playMovie(slug) {
-    window.location.href = `watchMovie.html?slug=${slug}`;
+    window.location.href = `../watch/index.html?name=${slug}&episode=`;
 }
 
 function addSliderLogic() {
