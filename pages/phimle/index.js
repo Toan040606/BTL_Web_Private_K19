@@ -51,21 +51,37 @@ async function loadCategory(rowId, slug, limit = 15) {
   }
 }
 
+// function scrollRow(rowId, dir) {
+//   const row = document.getElementById(rowId);
+//   const cards = row.querySelectorAll(".card");
+//   if (!cards.length) return;
+
+//   const visible = 9;
+//   const total = cards.length;
+
+//   let index = Number(row.dataset.index || 0);
+//   index += dir * visible;
+
+//   if (index < 0) index = 0;
+//   if (index > total - visible) index = total - visible;
+
+//   const cardWidth = cards[0].offsetWidth + 16; 
+//   row.style.transform = `translateX(-${index * cardWidth}px)`;
+//   row.dataset.index = index;
+// }
+
 function scrollRow(rowId, dir) {
   const row = document.getElementById(rowId);
   const cards = row.querySelectorAll(".card");
   if (!cards.length) return;
-
-  const visible = 9;
-  const total = cards.length;
-
-  let index = Number(row.dataset.index || 0);
-  index += dir * visible;
-
-  if (index < 0) index = 0;
-  if (index > total - visible) index = total - visible;
-
   const cardWidth = cards[0].offsetWidth + 16; 
+  const visibleCards = Math.floor(row.parentElement.offsetWidth / cardWidth);
+  const total = cards.length;
+  let index = Number(row.dataset.index || 0);
+  index += dir * visibleCards;
+  if (index < 0) index = 0;
+  if (index > total - visibleCards) index = total - visibleCards;
+
   row.style.transform = `translateX(-${index * cardWidth}px)`;
   row.dataset.index = index;
 }
