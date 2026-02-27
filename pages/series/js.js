@@ -1,45 +1,15 @@
-const API_KEY = '6d967a137dbd0d17a690ac58bf76e5ae';
-const BASE_URL = 'https://api.themoviedb.org/3';
-const IMG_URL = 'https://image.tmdb.org/t/p/w500';
-const BACKDROP_URL = 'https://image.tmdb.org/t/p/original';
+const BASE_URL = 'https://ophim1.com';
+const API_URL = 'https://ophim1.com/danh-sach';
 
 const sections = [
+    { title: "Phim bộ mới nhất", endpoint: `https://ophim1.com/v1/api/danh-sach/phim-bo?page=1` },
+    { title: "Phim Việt Nam đặc sắc", endpoint: `https://ophim1.com/v1/api/quoc-gia/viet-nam?page=1` },
+    { title: "Siêu phẩm Hàn Quốc K-Drama", endpoint: `https://ophim1.com/v1/api/quoc-gia/han-quoc?page=1` },
+    { title: "Phim Trung Quốc mới nhất", endpoint: `https://ophim1.com/v1/api/quoc-gia/trung-quoc?page=1` },
     {
-        title: "Treanding Now",
-        endpoint: `${BASE_URL}/tv/on_the_air?api_key=${API_KEY}&language=vi-VN&page=1`
-    },
-    {
-        title: "Phim bộ mới nhất",
-        endpoint: `${BASE_URL}/discover/tv?api_key=${API_KEY}&sort_by=first_air_date.desc&language=vi-VN`
-    },
-    {
-        title: "Phim bộ được đánh giá cao",
-        endpoint: `${BASE_URL}/discover/tv?api_key=${API_KEY}&sort_by=vote_average.desc&vote_count.gte=100&language=vi-VN`
-    },
-    { 
-        title: "Phim Tiên hiệp, Huyền huyễn", 
-        endpoint: `${BASE_URL}/discover/tv?api_key=${API_KEY}&with_genres=10765&language=vi-VN` 
-    },
-    { 
-        title: "Top phim xuyên không hấp dẫn", 
-        endpoint: `${BASE_URL}/search/multi?api_key=${API_KEY}&query=time+travel&language=vi-VN` 
-    },
-    { 
-        title: "Phim bộ Việt Nam đặc sắc", 
-        endpoint: `${BASE_URL}/discover/tv?api_key=${API_KEY}&with_original_language=vi&sort_by=first_air_date.desc&language=vi-VN` 
-    },
-    {
-        title: "Siêu phẩm Hàn Quốc K-Drama",
-        endpoint: `${BASE_URL}/discover/tv?api_key=${API_KEY}&with_original_language=ko&sort_by=popularity.desc&first_air_date.gte=2024-01-01&language=vi-VN`
-    },
-    {
-    title: "Phim Trung Quốc mới nhất",
-        endpoint: `${BASE_URL}/discover/tv?api_key=${API_KEY}&with_original_language=zh&sort_by=popularity.desc&first_air_date.gte=2024-01-01&language=vi-VN`
-    },
-    {
-        title: "Phim bộ Âu Mỹ nổi bật",
-        endpoint: `${BASE_URL}/discover/tv?api_key=${API_KEY}&with_original_language=en&sort_by=popularity.desc&language=vi-VN`
-    },
+        title: "Phim bom tấn Hollywood",
+        endpoint: `https://ophim1.com/v1/api/danh-sach/phim-le?page=1`
+    }
 ];
 
 async function renderMovieApp() {
@@ -51,88 +21,85 @@ async function renderMovieApp() {
         try {
             const response = await fetch(section.endpoint);
             const data = await response.json();
-            const movies = data.results.filter(m => m.poster_path || m.backdrop_path);
+
+            let movies = [];
+            if (data.items) {
+                movies = data.items;
+            } else if (data.data && data.data.items) {
+                movies = data.data.items;
+            }
+
+            const cdnImage = data.pathImage || (data.data && data.data.params && data.data.params.cdn_path) || "https://img.otruyenapi.com/uploads/movies/";
+
+            if (movies.length === 0) continue;
 
             htmlContent += `
                 <div class="movie-section">
                     <div class="section-header">
                         <span class="movie-header">${section.title}</span>
-                        <button class="icon"><i class="fas fa-chevron-right"></i></button>
                     </div>
                     <div class="slider-wrapper">
                         <button class="ctrl-btn prev-btn"><i class="fas fa-chevron-left"></i></button>
                         <div class="movie-grid">
-                            ${movies.map(m => `
+                            ${movies.map(m => {
+                let posterPath = m.poster_url || m.thumb_url || "";
+
+                if (posterPath && !posterPath.startsWith("http")) {
+                    posterPath = "https://img.ophim.live/uploads/movies/" + posterPath;
+                }
+                if (!posterPath.startsWith('http')) {
+                    const cleanCDN = cdnImage.endsWith('/') ? cdnImage : cdnImage + '/';
+                    const cleanThumb = posterPath.startsWith('/') ? posterPath.substring(1) : posterPath;
+                    posterPath = cleanCDN + cleanThumb;
+                }
+
+                return `
                                 <div class="movie-card">
                                     <div class="card">
-                                        <img src="${m.poster_path ? IMG_URL + m.poster_path : 'https://via.placeholder.com/200x300?text=No+Image'}" 
-                                            alt="${m.title || m.name}" class="poster">
-                                        <p class="title-label">${m.title || m.name}</p>
+                                        <img src="${posterPath}" alt="${m.name}" class="poster" referrerpolicy="no-referrer">
+                                        <p class="title-label">${m.name}</p>
                                     </div>
                                     <div class="hover-card">
-                                        <img src="${m.backdrop_path ? BACKDROP_URL + m.backdrop_path : (m.poster_path ? IMG_URL + m.poster_path : 'https://via.placeholder.com/300x200?text=No+Banner')}" 
-     class="hover-banner">
+                                        <img src="${posterPath}" class="hover-banner" referrerpolicy="no-referrer">
                                         <div class="hover-content">
                                             <div class="actions">
-                                                <button class="play-btn" onclick="playMovie('${m.id}', '${m.title ? 'movie' : 'tv'}')">
+                                                <button class="play-btn" onclick="playMovie('${m.slug}')">
                                                     <i class="fas fa-play"></i> Xem ngay
                                                 </button>
-                                                <span class="circle-icon"><i class="far fa-heart"></i></span>
                                             </div>
-                                            <h3>${m.title || m.name}</h3>
-                                            <div class="meta">
-                                                <span class="rating"><i class="fas fa-star"></i> ${m.vote_average.toFixed(1)}</span>
-                                                <span>${(m.release_date || m.first_air_date || '').split('-')[0]}</span>
-                                            </div>
-                                            <p class="desc">${m.overview || 'Đang cập nhật nội dung...'}</p>
+                                            <h3>${m.name}</h3>
+                                            <div class="meta"><span>${m.year || '2026'}</span> <span class="rating">HD</span></div>
                                         </div>
                                     </div>
-                                </div>
-                            `).join('')}
+                                </div>`;
+            }).join('')}
                         </div>
                         <button class="ctrl-btn next-btn"><i class="fas fa-chevron-right"></i></button>
                     </div>
-                </div>
-            `;
+                </div>`;
         } catch (error) {
-            console.error("Lỗi gọi API cho " + section.title, error);
+            console.error("Lỗi mục " + section.title, error);
         }
     }
-
     appContainer.innerHTML = htmlContent;
-    addSliderLogic(); 
+    addSliderLogic();
+}
+
+function playMovie(slug) {
+    window.location.href = `watchMovie.html?slug=${slug}`;
 }
 
 function addSliderLogic() {
     const wrappers = document.querySelectorAll('.slider-wrapper');
-
     wrappers.forEach(wrapper => {
         const grid = wrapper.querySelector('.movie-grid');
         const prevBtn = wrapper.querySelector('.prev-btn');
         const nextBtn = wrapper.querySelector('.next-btn');
+        if (!grid || !prevBtn || !nextBtn) return;
 
-        const scrollAmount = grid.clientWidth * 0.75;
-
-        nextBtn.addEventListener('click', () => {
-            grid.scrollLeft += scrollAmount;
-        });
-
-        prevBtn.addEventListener('click', () => {
-            grid.scrollLeft -= scrollAmount;
-        });
+        nextBtn.onclick = () => grid.scrollBy({ left: 600, behavior: 'smooth' });
+        prevBtn.onclick = () => grid.scrollBy({ left: -600, behavior: 'smooth' });
     });
-}
-
-function playMovie(id, type) {
-    window.location.href = `watchMovie.html?id=${id}&type=${type}`;
-}
-
-function closePlayer() {
-    const modal = document.getElementById('video-modal');
-    const player = document.getElementById('video-player');
-    
-    player.src = ""; 
-    modal.style.display = 'none';
 }
 
 document.addEventListener('DOMContentLoaded', renderMovieApp);
